@@ -27,13 +27,20 @@
       document.getElementById('result').innerHTML = exchangeRate;
     };
 
-    const error = () => console.log(this.responseText);
+    const error = (e) => console.error("Error en la solicitud:", e.target.responseText);
 
     function getExchangeRate() {
+      const currency = document.getElementById('currency').value;
+      let apiUrl = "http://localhost:3000/tipocambio";
+
+      if (currency !== "general") {
+        apiUrl += `?type=${currency.toLowerCase()}`;
+      }
+
       const ajaxRequest = new XMLHttpRequest();
       ajaxRequest.addEventListener("load", completed);
       ajaxRequest.addEventListener("error", error);
-      ajaxRequest.open("GET", "http://localhost:3000/tipocambio");
+      ajaxRequest.open("GET", apiUrl);
       ajaxRequest.send();
     }
   </script>
@@ -46,17 +53,17 @@
 
     <div class="mb-3">
       <label for="currency" class="form-label">Selecciona una moneda:</label>
-      <select id="currency" class="form-select custom-select border-pink">
+      <select id="currency" class="form-select">
         <option value="general">Compra y Venta General</option>
         <option value="USD">Dólares (USD)</option>
         <option value="EUR">Euros (EUR)</option>
       </select>
     </div>
 
-    <button class="btn btn-pink" onclick="getExchangeRate();">Consultar</button>
+    <button class="btn btn-primary" onclick="getExchangeRate();">Consultar</button>
 
     <h3 class="mt-4">Resultado:</h3>
-    <div id="result" class="alert alert-pink mt-2"></div>
+    <div id="result" class="alert alert-info mt-2"></div>
   </div>
 
 </body>
