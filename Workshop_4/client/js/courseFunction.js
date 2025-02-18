@@ -1,6 +1,6 @@
 // Fetch all courses
 function fetchCourses() {
-    fetch("http://localhost:3001/courses")
+    fetch("http://localhost:8080/courses")
         .then(response => response.json())
         .then(courses => {
             const table = document.getElementById("courseList");
@@ -29,7 +29,7 @@ function fetchCourses() {
 
 // Fetch all teachers
 function fetchTeachers() {
-    fetch("http://localhost:3001/teachers")
+    fetch("http://localhost:8080/teachers")
         .then(response => response.json())
         .then(teachers => {
             const teacherSelect = document.getElementById("teacherSelect");
@@ -57,7 +57,7 @@ function handleFormSubmit(event) {
 
     if (courseId) {
         // PUT para actualizar el curso
-        fetch(`http://localhost:3001/courses/${courseId}`, {
+        fetch(`http://localhost:8080/courses/${courseId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -66,7 +66,7 @@ function handleFormSubmit(event) {
         }).then(fetchCourses);
     } else {
         // POST para crear un nuevo curso
-        fetch("http://localhost:3001/courses", {
+        fetch("http://localhost:8080/courses", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -98,7 +98,7 @@ function handleFormSubmit(event) {
     // Delete course
     function deleteCourse(id) {
         if (confirm("Are you sure you want to delete this course?")) {
-            fetch(`http://localhost:3001/courses?id=${id}`, { method: "DELETE" })
+            fetch(`http://localhost:8080/courses?id=${id}`, { method: "DELETE" })
                 .then(fetchCourses); // Refresh the course list
         }
     }
