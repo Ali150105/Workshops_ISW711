@@ -10,7 +10,7 @@ const coursePost = async (req, res) => {
   let course = new Course(req.body);
   await course.save()
     .then(course => {
-      res.status(201); // CREATED
+      res.status(201); 
       res.header({
         'location': `/api/courses/?id=${course.id}`
       });
@@ -32,14 +32,14 @@ const coursePost = async (req, res) => {
  * @param {*} res
  */
 const courseGet = (req, res) => {
-  // Si hay un parámetro teacher en la consulta, filtra los cursos por ese teacher._id
+  
   const teacherId = req.query.teacher;
 
-  // Si no hay filtro, trae todos los cursos
+ 
   const query = teacherId ? { teacher: teacherId } : {};
 
   Course.find(query)
-    .populate('teacher', 'first_name last_name') // Solo trae los campos first_name y last_name
+    .populate('teacher', 'first_name last_name') 
     .then(courses => {
       res.json(courses);
     })
@@ -58,22 +58,21 @@ const courseGet = (req, res) => {
  */
 const courseUpdate = async (req, res) => {
   const { name, credits, teacher } = req.body;
-  const { id } = req.params;  // Obtenemos el id de los parámetros de la URL
+  const { id } = req.params;  
 
-  // Verifica si se recibe el ID
   if (!id) {
     return res.status(400).json({ error: 'Course ID is required' });
   }
 
   try {
-    // Actualiza el curso según el ID
+    
     const updatedCourse = await Course.findByIdAndUpdate(id, { name, credits, teacher }, { new: true });
 
     if (!updatedCourse) {
       return res.status(404).json({ error: 'Course not found' });
     }
 
-    res.json(updatedCourse); // Devuelve el curso actualizado
+    res.json(updatedCourse); 
   } catch (err) {
     res.status(422).json({ error: 'Error updating the course', details: err });
   }
@@ -89,7 +88,7 @@ const courseUpdate = async (req, res) => {
 const courseDelete = async (req, res) => {
   const { id } = req.query;
 
-  // Verifica si se recibe el ID
+  
   if (!id) {
     return res.status(400).json({ error: 'Course ID is required' });
   }
